@@ -1,0 +1,36 @@
+<div class="control-section">
+  <ejs-treegrid  
+    #treegrid
+    allowFiltering='true'
+    [dataSource]='data'
+    allowPaging='true'
+    childMapping='subtasks'
+    height='350'
+    [treeColumnIndex]='1' 
+    [showColumnChooser]='true'
+    [toolbar]="toolbar" 
+    [pageSettings]='pageSettings'
+    [filterSettings]='filterSettings'
+    allowSorting='true'
+    [sortSettings]='sortSettings'
+    allowReordering='true'
+    [editSettings]='editing'
+    [contextMenuItems]="contextMenuItems"
+    (contextMenuClick)="contextMenuClick($event)"
+    [allowRowDragAndDrop]='true'
+    [selectionSettings]='selectOptions'
+    [allowSelection]='true'
+    (contextMenuOpen)="contextMenuOpen($event)"
+    >
+    <e-columns >
+        <e-column *ngFor="let column of columns; let i = index"
+                  [field]="column.field"
+                  [headerText]='column.headerText'
+                  [width]='column.width' 
+                  [textAlign]='column.textAlign'
+                  [format]="column.format"
+                  [id]='i' >   
+        </e-column>
+    </e-columns>
+</ejs-treegrid>
+</div>
