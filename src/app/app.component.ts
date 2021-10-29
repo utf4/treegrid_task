@@ -234,7 +234,9 @@ export class AppComponent  implements OnInit {
       alert('Plase enter Data');
     }else if(this.modalData.id !== ''){
       let data : any =  this.ColumnVaue()
-      data[this.modalData.id].headerText = 'asdasda';
+      data[this.modalData.id].headerText = this.modalData.headerText;
+      data[this.modalData.id].field = this.modalData.field;
+
       this.columns = [...data];
     }else{
       this.columns.push(this.modalData)
