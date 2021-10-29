@@ -43,7 +43,15 @@ export class AppComponent  implements OnInit {
   public d1data: Object | undefined;
   public sortSettings: Object | undefined;
   public editing: EditSettingsModel | undefined;
-  public contextMenuItems: Object | undefined;
+  public contextMenuItems= [
+    { text: 'Add Column', target: '.e-headercontent', id: 'create-column' },
+    { text: 'Edit', target: '.e-headercontent', id: 'edit-column' },
+    { text: 'Delete', target: '.e-headercontent', id: 'delete-column' },
+    { text: 'Copy', target:'.e-content', id: 'customCopy' },
+    { text: 'Cut', target: '.e-content', id: 'customCut' },
+    { text: 'PasteNext', target: '.e-content', id: 'customPasteNext' },
+    { text: 'PasteChild', target: '.e-content', id: 'customPasteChild' },
+  ];
   public ddlfields: Object | undefined;
   public d2data: Object | undefined;
   public fields: Object | undefined;
@@ -62,7 +70,7 @@ export class AppComponent  implements OnInit {
 
   @ViewChild('content', { static: false }) private content: any;
   @ViewChild('treegrid')
-  public treegrid: TreeGridComponent;
+  public treegrid!: TreeGridComponent;
 
   constructor(private modalService: NgbModal) {
    
@@ -73,25 +81,16 @@ export class AppComponent  implements OnInit {
     this.columns = this.ColumnVaue();
     this.pageSettings = { pageSize: 10 };
     this.editing = { allowDeleting: true, allowEditing: true, mode: 'Row' };
-    this.contextMenuItems= [
-      { text: 'Add Column', target: '.e-headercontent', id: 'create-column' },
-      { text: 'Edit', target: '.e-headercontent', id: 'edit-column' },
-      { text: 'Delete', target: '.e-headercontent', id: 'delete-column' },
-      { text: 'Copy', target:'.e-content', id: 'customCopy' },
-      { text: 'Cut', target: '.e-content', id: 'customCut' },
-      { text: 'PasteNext', target: '.e-content', id: 'customPasteNext' },
-      { text: 'PasteChild', target: '.e-content', id: 'customPasteChild' },
-    ]
     this.toolbar = ['ColumnChooser'];
     this.filterSettings = { type: 'FilterBar', hierarchyMode: 'Parent', mode: 'Immediate' };
     this.templateOptions = {
       // Add Types
         create: (args: { element: Element }) => {
-            let dd: HTMLInputElement = document.createElement('input');
-            dd.id = 'duration';
-            return dd;
+            let duration: HTMLInputElement = document.createElement('input');
+            duration.id = 'duration';
+            return duration;
         },
-        write: (args: { element: Element }) => {
+        write: (_args: { element: Element }) => {
             let dataSource: string[] = ['All', '1', '3', '4', '5', '6', '8', '9'];
             this.dropDownFilter = new DropDownList({
                 dataSource: dataSource,
@@ -236,7 +235,9 @@ export class AppComponent  implements OnInit {
       alert('Plase enter Data');
     }else if(this.modalData.id !== ''){
       let data : any =  this.ColumnVaue()
-      data[this.modalData.id].headerText = 'asdasda';
+      data[this.modalData.id].headerText = this.modalData.headerText;
+      data[this.modalData.id].field = this.modalData.field;
+
       this.columns = [...data];
     }else{
       this.columns.push(this.modalData)
