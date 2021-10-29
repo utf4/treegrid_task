@@ -1,36 +1,70 @@
+
 <div class="control-section">
   <ejs-treegrid  
-    #treegrid
-    allowFiltering='true'
-    [dataSource]='data'
-    allowPaging='true'
-    childMapping='subtasks'
-    height='350'
-    [treeColumnIndex]='1' 
-    [showColumnChooser]='true'
-    [toolbar]="toolbar" 
-    [pageSettings]='pageSettings'
-    [filterSettings]='filterSettings'
-    allowSorting='true'
-    [sortSettings]='sortSettings'
-    allowReordering='true'
-    [editSettings]='editing'
-    [contextMenuItems]="contextMenuItems"
-    (contextMenuClick)="contextMenuClick($event)"
-    [allowRowDragAndDrop]='true'
-    [selectionSettings]='selectOptions'
-    [allowSelection]='true'
-    (contextMenuOpen)="contextMenuOpen($event)"
-    >
-    <e-columns >
-        <e-column *ngFor="let column of columns; let i = index"
-                  [field]="column.field"
-                  [headerText]='column.headerText'
-                  [width]='column.width' 
-                  [textAlign]='column.textAlign'
-                  [format]="column.format"
-                  [id]='i' >   
-        </e-column>
-    </e-columns>
-</ejs-treegrid>
+  #treegrid
+  allowFiltering='true'
+  [dataSource]='data'
+  allowPaging='true'
+  childMapping='subtasks'
+  height='350'
+  [treeColumnIndex]='1' 
+  [showColumnChooser]='true'
+  [toolbar]="toolbar" 
+  [pageSettings]='pageSettings'
+  [filterSettings]='filterSettings'
+  allowSorting='true'
+  [sortSettings]='sortSettings'
+  allowReordering='true'
+  [editSettings]='editing'
+  [contextMenuItems]="contextMenuItems"
+  (contextMenuClick)="contextMenuClick($event)"
+  [allowRowDragAndDrop]='true'
+  [selectionSettings]='selectOptions'
+  [allowSelection]='true'
+  (contextMenuOpen)="contextMenuOpen($event)"
+  >
+  <e-columns >
+      <e-column *ngFor="let column of columns; let i = index;"
+                [field]="column.field"
+                [headerText]='column.headerText'
+                [width]='column.width' 
+                [textAlign]='column.textAlign'
+                [format]="column.format"
+                [id]='i' >   
+      </e-column>
+  </e-columns>
+  </ejs-treegrid>
 </div>
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{ modalTitle}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <label for="dateOfBirth">Header Text*</label>
+        <div class="input-group">
+          <input  class="form-control" placeholder="Enter Name field"  [(ngModel)]="modalData.headerText"  name="headerText"  required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="dateOfBirth">Field Name*</label>
+        <div class="input-group">
+          <input  class="form-control" placeholder="Enter Name field"  [(ngModel)]="modalData.field"  name="field"  required>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="saveData()">Save</button>
+    <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">cancel</button>
+  </div>
+</ng-template>
+
+
+
+
+
