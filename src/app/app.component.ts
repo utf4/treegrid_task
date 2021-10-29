@@ -142,14 +142,14 @@ export class AppComponent  implements OnInit {
   }
   customCopy(){
     this.row=this.rowIndex;
-    let rows=this.treegrid.getSelectedRecords(); 
+    const rows=this.treegrid.getSelectedRecords(); 
     this.seleted_rows=rows;
   }
   customCut(){
     this.row=this.rowIndex;
     this.is_cut=true;
-    let rows=this.treegrid.getSelectedRecords(); 
-    let rows_index=this.treegrid.getSelectedRowIndexes(); 
+    const rows=this.treegrid.getSelectedRecords(); 
+    const rows_index=this.treegrid.getSelectedRowIndexes(); 
     this.selected_row_index=rows_index;
     this.seleted_rows=rows;
   }
@@ -169,8 +169,8 @@ export class AppComponent  implements OnInit {
   }
   customPasteChild(){
     let tem_arr=this.data;
-    let array_obj =tem_arr[Number(this.rowIndex)];
-    let new_array=array_obj.subtasks.concat(this.seleted_rows);
+    const array_obj =tem_arr[Number(this.rowIndex)];
+    const new_array=array_obj.subtasks.concat(this.seleted_rows);
     array_obj.subtasks=new_array;
     tem_arr[this.rowIndex]=array_obj;
     if(this.is_cut==true){
