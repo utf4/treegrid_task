@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Component, OnInit, ViewEncapsulation, ViewChild, Inject} from '@angular/core';
 import { sampleData } from '../jsontreegriddata';
 import {  TreeGridComponent, RowDDService,SelectionService, ResizeService,
@@ -35,14 +36,14 @@ export class AppComponent  implements OnInit {
   title = 'treegrid-task';
   public data: Object[] = [];
   public updated_data: Object[] = [];
-  public pageSettings: PageSettingsModel | undefined;
-  public toolbar: string[] | undefined;
-  public filterSettings: Object | undefined;
-  public templateOptions: object | undefined;
+  public pageSettings: PageSettingsModel;
+  public toolbar: string[];
+  public filterSettings: Object;
+  public templateOptions: object;
   public dropDownFilter: DropDownList = new DropDownList;
-  public d1data: Object | undefined;
-  public sortSettings: Object | undefined;
-  public editing: EditSettingsModel | undefined;
+  public d1data: Object;
+  public sortSettings: Object;
+  public editing: EditSettingsModel;
   public contextMenuItems= [
     { text: 'Add Column', target: '.e-headercontent', id: 'create-column' },
     { text: 'Edit', target: '.e-headercontent', id: 'edit-column' },
@@ -52,23 +53,23 @@ export class AppComponent  implements OnInit {
     { text: 'PasteNext', target: '.e-content', id: 'customPasteNext' },
     { text: 'PasteChild', target: '.e-content', id: 'customPasteChild' },
   ];
-  public ddlfields: Object | undefined;
-  public d2data: Object | undefined;
-  public fields: Object | undefined;
-  public selectOptions: Object | undefined;
-  public editparams: Object | undefined;
-  public rowIndex: any;
-  public cellIndex: any;
-  public selectionOptions: Object | undefined;
-  public row : Number | undefined;
+  public ddlfields: Object;
+  public d2data: Object;
+  public fields: Object;
+  public selectOptions: Object;
+  public editparams: Object;
+  public rowIndex;
+  public cellIndex;
+  public selectionOptions: Object;
+  public row : Number;
   public modalTitle ='Add Column';
   public modalData = {id: '',field: '',headerText:'',width: '70', textAlign:'' };
   public columns: Array<{field: string, headerText: string, width: string, textAlign: string, format?:string}> = [];
-  public seleted_rows : any | undefined;
-  public selected_row_index : any | undefined;
-  public is_cut : Boolean | undefined;
+  public seleted_rows;
+  public selected_row_index;
+  public is_cut : Boolean;
 
-  @ViewChild('content', { static: false }) private content: any;
+  @ViewChild('content', { static: false }) private content;
   @ViewChild('treegrid')
   public treegrid!: TreeGridComponent;
 
@@ -95,9 +96,9 @@ export class AppComponent  implements OnInit {
                 dataSource: dataSource,
                 value: 'All',
                 change: (e: ChangeEventArgs) => {
-                    let valuenum: any = +e.value;
-                    let id: any = <string>this.dropDownFilter.element.id;
-                    let value: any = <string>e.value;
+                    let valuenum = +e.value;
+                    let id = <string>this.dropDownFilter.element.id;
+                    let value = <string>e.value;
                     if ( value !== 'All') {
                         this.treegrid.filterByColumn( id, 'equal', valuenum );
                     } else {
@@ -135,7 +136,7 @@ export class AppComponent  implements OnInit {
       { field: "priority",headerText:"Priority", width: '90' , textAlign:'',format:''},
       ]
   }
-  contextMenuOpen(args : any): void {
+  contextMenuOpen(args): void {
     this.rowIndex = args.rowInfo.rowIndex;
     this.cellIndex = args.rowInfo.cellIndex;
   }
@@ -168,7 +169,7 @@ export class AppComponent  implements OnInit {
   }
   customPasteChild(){
     let tem_arr=this.data;
-    let array_obj: any =tem_arr[Number(this.rowIndex)];
+    let array_obj =tem_arr[Number(this.rowIndex)];
     let new_array=array_obj.subtasks.concat(this.seleted_rows);
     array_obj.subtasks=new_array;
     tem_arr[this.rowIndex]=array_obj;
@@ -183,14 +184,14 @@ export class AppComponent  implements OnInit {
     this.seleted_rows=[];
     this.selected_row_index=[];
   }
-  contextMenuClick (args?: any): void {
-    if (args.item.id == 'customCopy') {
+  contextMenuClick (args?): void {
+    if (args.item.id === 'customCopy') {
       this.customCopy();
-    }else if(args.item.id == 'customCut'){
+    }else if(args.item.id === 'customCut'){
       this.customCut();
-    }else if (args.item.id == 'customPasteNext') {
+    }else if (args.item.id === 'customPasteNext') {
      this.customPasteNext();
-    }else if(args.item.id =='customPasteChild'){
+    }else if(args.item.id === 'customPasteChild'){
       this.customPasteChild();
     }else if (args.item.id === 'create-column') {
       this.addColumn();
@@ -200,7 +201,7 @@ export class AppComponent  implements OnInit {
       this.columns.splice(args?.column.index, 1);
     }
   }
-  open(content:any) {
+  open(content) {
     this.modalService.open(content);
   }
   addColumn(){
@@ -208,7 +209,7 @@ export class AppComponent  implements OnInit {
     this.setModalDefaultValue();
     this.open(this.content);
   }
-  editColumn(columnIndex:any){
+  editColumn(columnIndex){
     this.modalTitle = 'Edit Column';
     let data = this.columns[columnIndex];
     this.modalData = {
@@ -233,10 +234,9 @@ export class AppComponent  implements OnInit {
     if(this.modalData.headerText === '' || this.modalData.field === ''){
       alert('Plase enter Data');
     }else if(this.modalData.id !== ''){
-      let data : any =  this.ColumnVaue()
+      let data =  this.ColumnVaue()
       data[this.modalData.id].headerText = this.modalData.headerText;
       data[this.modalData.id].field = this.modalData.field;
-
       this.columns = [...data];
     }else{
       this.columns.push(this.modalData)
