@@ -85,6 +85,7 @@ export class AppComponent  implements OnInit {
     this.toolbar = ['ColumnChooser'];
     this.filterSettings = { type: 'FilterBar', hierarchyMode: 'Parent', mode: 'Immediate' };
     this.templateOptions = {
+      // Add Types
         create: (args: { element: Element }) => {
             let dd: HTMLInputElement = document.createElement('input');
             dd.id = 'duration';
