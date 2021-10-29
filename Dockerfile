@@ -3,7 +3,7 @@ FROM node:12.8-alpine AS builder
 
 WORKDIR /usr/src/app
 COPY . .
-RUN yarn && yarn build
+RUN npm install && npm build
 
 # Step 2: Use build output from 'builder'
 FROM nginx:stable-alpine
