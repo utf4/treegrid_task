@@ -65,8 +65,8 @@ export class AppComponent  implements OnInit {
   public modalTitle ='Add Column';
   public modalData = {id: '',field: '',headerText:'',width: '70', textAlign:'' };
   public columns: Array<{field: string, headerText: string, width: string, textAlign: string, format?:string}> = [];
-  public seleted_rows;
-  public selected_row_index;
+  public seleted_rows: Array;
+  public selected_row_index: Array;
   public is_cut : Boolean;
 
   @ViewChild('content', { static: false }) private content;
