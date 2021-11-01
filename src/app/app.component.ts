@@ -236,6 +236,7 @@ export class AppComponent  implements OnInit {
     }else if(this.modalData.id !== ''){
       const column = this.treegrid.getColumnByField(this.modalData.field);
       column.headerText = this.modalData.headerText;
+      column.width = this.modalData.width;
       this.treegrid.refreshColumns(); 
       this.modalService.dismissAll();
     }else{
