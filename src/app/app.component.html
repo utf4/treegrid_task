@@ -50,7 +50,7 @@
           <input  class="form-control" placeholder="Enter Name field"  [(ngModel)]="modalData.headerText"  name="headerText"  required>
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group"  *ngIf="modalData.id == ''">
         <label for="dateOfBirth">Field Name*</label>
         <div class="input-group">
           <input  class="form-control" placeholder="Enter Name field"  [(ngModel)]="modalData.field"  name="field"  required>

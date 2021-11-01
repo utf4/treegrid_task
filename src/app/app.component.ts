@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { Component, OnInit, ViewEncapsulation, ViewChild, Inject} from '@angular/core';
-import { sampleData } from '../jsontreegriddata';
+import { columnData, sampleData } from '../jsontreegriddata';
 import {  TreeGridComponent, RowDDService,SelectionService, ResizeService,
           PageService,ExcelExportService, PdfExportService, ColumnChooserService,
           ToolbarService,EditService, FilterService,SortService, Column,
@@ -234,10 +234,10 @@ export class AppComponent  implements OnInit {
     if(this.modalData.headerText === '' || this.modalData.field === ''){
       alert('Plase enter Data');
     }else if(this.modalData.id !== ''){
-      let data =  this.ColumnVaue()
-      data[this.modalData.id].headerText = this.modalData.headerText;
-      data[this.modalData.id].field = this.modalData.field;
-      this.columns = [...data];
+      const column = this.treegrid.getColumnByField(this.modalData.field);
+      column.headerText = this.modalData.headerText;
+      this.treegrid.refreshColumns(); 
+      this.modalService.dismissAll();
     }else{
       this.columns.push(this.modalData)
       this.setModalDefaultValue();
