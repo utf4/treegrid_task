@@ -211,13 +211,14 @@ export class AppComponent  implements OnInit {
   }
   editColumn(columnIndex){
     this.modalTitle = 'Edit Column';
-    let data = this.columns[columnIndex];
+    const data = this.columns[columnIndex];
+    const column = this.treegrid.getColumnByField(data.field);
     this.modalData = {
       id: columnIndex,
-      field: data.field,
-      headerText: data.headerText,
-      width: data.width,  
-      textAlign:data.textAlign
+      field: column.field,
+      headerText: column.headerText,
+      width: column.width,  
+      textAlign:column.textAlign
     }
     this.open(this.content);
   }
