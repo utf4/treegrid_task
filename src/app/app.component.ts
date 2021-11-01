@@ -127,8 +127,8 @@ export class AppComponent  implements OnInit {
 
   ColumnVaue(){
     return [       
-      { field : "taskID", headerText:"Task ID" , width: '70' , textAlign:'Right',format:''},
-      { field: "taskName", headerText:"Task Name", width: '200' , textAlign:'Right' ,format:''},
+      { field : "taskID", headerText:"Task ID" , width: '70' , textAlign:'Right',format:'',},
+      { field: "taskName", headerText:"Task Name", width: '200' , textAlign:'Left' ,format:''},
       { field: "startDate",headerText:"Start Date", width: '90' , textAlign:'Right', format:'yMd'},
       { field: "endDate", headerText:"End Date", width: '90' , textAlign:'Right', format:'yMd'},
       { field: "duration",headerText:"Duration", width: '80' , textAlign:'Right',format:''},
@@ -139,6 +139,7 @@ export class AppComponent  implements OnInit {
   contextMenuOpen(args): void {
     this.rowIndex = args.rowInfo.rowIndex;
     this.cellIndex = args.rowInfo.cellIndex;
+    this.treegrid.selectRows(this.selected_row_index);
   }
   customCopy(){
     this.row=this.rowIndex;
@@ -228,7 +229,7 @@ export class AppComponent  implements OnInit {
       field: '',
       headerText:'',
       width: '70', 
-      textAlign:'Right'
+      textAlign:'Left'
     }
   }
   saveData(){
