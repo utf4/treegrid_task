@@ -128,12 +128,12 @@ export class AppComponent  implements OnInit {
   ColumnVaue(){
     return [       
       { field : "taskID", headerText:"Task ID" , width: '70' , textAlign:'Right',format:''},
-      { field: "taskName", headerText:"Task Name", width: '200' , textAlign:'' ,format:''},
+      { field: "taskName", headerText:"Task Name", width: '200' , textAlign:'Right' ,format:''},
       { field: "startDate",headerText:"Start Date", width: '90' , textAlign:'Right', format:'yMd'},
       { field: "endDate", headerText:"End Date", width: '90' , textAlign:'Right', format:'yMd'},
       { field: "duration",headerText:"Duration", width: '80' , textAlign:'Right',format:''},
       { field: "progress",headerText:"Progress", width: '80' , textAlign:'Right',format:'' },
-      { field: "priority",headerText:"Priority", width: '90' , textAlign:'',format:''},
+      { field: "priority",headerText:"Priority", width: '90' , textAlign:'Right',format:''},
       ]
   }
   contextMenuOpen(args): void {
@@ -228,16 +228,17 @@ export class AppComponent  implements OnInit {
       field: '',
       headerText:'',
       width: '70', 
-      textAlign:''
+      textAlign:'Right'
     }
   }
   saveData(){
     if(this.modalData.headerText === '' || this.modalData.field === ''){
-      alert('Plase enter Data');
+      alert('Plase Enter Data');
     }else if(this.modalData.id !== ''){
       const column = this.treegrid.getColumnByField(this.modalData.field);
       column.headerText = this.modalData.headerText;
       column.width = this.modalData.width;
+      column.textAlign = this.modalData.textAlign;
       this.treegrid.refreshColumns(); 
       this.modalService.dismissAll();
     }else{
