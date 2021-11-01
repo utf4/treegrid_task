@@ -58,15 +58,15 @@ export class AppComponent  implements OnInit {
   public fields: Object;
   public selectOptions: Object;
   public editparams: Object;
-  public rowIndex;
-  public cellIndex;
+  public rowIndex:Number;
+  public cellIndex:Number;
   public selectionOptions: Object;
   public row : Number;
   public modalTitle ='Add Column';
   public modalData = {id: '',field: '',headerText:'',width: '70', textAlign:'' };
   public columns: Array<{field: string, headerText: string, width: string, textAlign: string, format?:string}> = [];
-  public seleted_rows;
-  public selected_row_index;
+  public seleted_rows: Array;
+  public selected_row_index: Array;
   public is_cut : Boolean;
 
   @ViewChild('content', { static: false }) private content;
@@ -85,7 +85,7 @@ export class AppComponent  implements OnInit {
     this.toolbar = ['ColumnChooser'];
     this.filterSettings = { type: 'FilterBar', hierarchyMode: 'Parent', mode: 'Immediate' };
     this.templateOptions = {
-        create: (args: { element: Element }) => {
+        create: (_args: { element: Element }) => {
             let duration: HTMLInputElement = document.createElement('input');
             duration.id = 'duration';
             return duration;
@@ -155,7 +155,7 @@ export class AppComponent  implements OnInit {
   }
   customPasteNext(){
     let tem_arr=this.data;
-    tem_arr=tem_arr.concat(this.seleted_rows);
+    tem_arr=[...tem_arr,...this.seleted_rows];
      if(this.is_cut==true){
         for(let i=0;i<this.selected_row_index.length;i++){
         delete tem_arr[this.selected_row_index[i]]
@@ -170,7 +170,7 @@ export class AppComponent  implements OnInit {
   customPasteChild(){
     let tem_arr=this.data;
     const array_obj =tem_arr[Number(this.rowIndex)];
-    const new_array=array_obj.subtasks.concat(this.seleted_rows);
+    const new_array=[...array_obj,...this.seleted_rows];
     array_obj.subtasks=new_array;
     tem_arr[this.rowIndex]=array_obj;
     if(this.is_cut==true){
