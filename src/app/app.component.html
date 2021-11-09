@@ -9,7 +9,7 @@
   height='350'
   [treeColumnIndex]='1' 
   [showColumnChooser]='true'
-  [toolbar]="toolbar" 
+  [toolbar]="toolbarOptions" 
   [pageSettings]='pageSettings'
   [filterSettings]='filterSettings'
   allowSorting='true'
@@ -30,7 +30,9 @@
                 [width]='column.width' 
                 [textAlign]='column.textAlign'
                 [format]="column.format"
-                [id]='i' >   
+                [id]='i'
+                [isPrimaryKey]='i==0? true:false'
+                >   
       </e-column>
   </e-columns>
   </ejs-treegrid>
