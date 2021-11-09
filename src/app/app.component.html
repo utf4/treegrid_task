@@ -27,6 +27,10 @@
       <e-column *ngFor="let column of columns; let i = index;"
                 [field]="column.field"
                 [headerText]='column.headerText'
+                [fontSize]='column.fontSize'
+                [fontColor]='column.fontColor'
+                [dataType]='column.dataType'
+                [bgColor]='column.bgColor'
                 [width]='column.width' 
                 [textAlign]='column.textAlign'
                 [format]="column.format"
@@ -63,9 +67,39 @@
         </div>
       </div>
       <div class="form-group">
+        <label for="dateOfBirth">Data Type</label>
+        <div class="input-group">
+          <input  class="form-control" placeholder="Enter DataType"  [(ngModel)]="modalData.dataType"  name="dataType"  required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="dateOfBirth">BackGround Color</label>
+        <div class="input-group">
+          <input type="color" class="form-control" placeholder="Select Color"  [(ngModel)]="modalData.bgColor"  name="bgColor"  required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="dateOfBirth">Font Size</label>
+        <div class="input-group">
+          <input  class="form-control" placeholder="Enter Font Size"  [(ngModel)]="modalData.fontSize"  name="fontSize"  required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="dateOfBirth">Font Color</label>
+        <div class="input-group">
+          <input type="color" class="form-control" placeholder="Select Font Color"  [(ngModel)]="modalData.fontColor"  name="fontColor"  required>
+        </div>
+      </div>
+      <div class="form-group">
         <label for="dateOfBirth">TextAlign</label>
         <div class="input-group">
-          <input  class="form-control" placeholder="Enter width"  [(ngModel)]="modalData.textAlign"  name="textAlign"  required>
+          <select class="form-control">
+            <option selected>Select DataType</option>
+            <option value="1">Text</option>
+            <option value="2">Enum</option>
+            <option value="3">Date</option>
+            <option value="3">Boolean</option>
+          </select>
         </div>
       </div>
     </form>

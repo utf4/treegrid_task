@@ -63,8 +63,8 @@ export class AppComponent  implements OnInit {
   public selectionOptions: Object;
   public row : Number;
   public modalTitle ='Add Column';
-  public modalData = {id: '',field: '',headerText:'',width: '70', textAlign:'' };
-  public columns: Array<{field: string, headerText: string, width: string, textAlign: string, format?:string}> = [];
+  public modalData = {id: '',field: '',headerText:'',width: '70',textAlign:'',dataType:'',bgColor:'',fontSize:'',fontColor:''};
+  public columns: Array<{field: string, headerText: string, width: string,dataType:string,bgColor:string, textAlign: string, format?:stringf,fontSize:string,fontColor:string}> = [];
   public seleted_rows: Array;
   public selected_row_index: Array;
   public is_cut : Boolean;
@@ -127,13 +127,13 @@ export class AppComponent  implements OnInit {
 
   ColumnVaue(){
     return [       
-      { field : "taskID", headerText:"Task ID" , width: '70' , textAlign:'Right',format:'',},
-      { field: "taskName", headerText:"Task Name", width: '200' , textAlign:'Left' ,format:''},
-      { field: "startDate",headerText:"Start Date", width: '90' , textAlign:'Right', format:'yMd'},
-      { field: "endDate", headerText:"End Date", width: '90' , textAlign:'Right', format:'yMd'},
-      { field: "duration",headerText:"Duration", width: '80' , textAlign:'Right',format:''},
-      { field: "progress",headerText:"Progress", width: '80' , textAlign:'Right',format:'' },
-      { field: "priority",headerText:"Priority", width: '90' , textAlign:'Right',format:''},
+      { field : "taskID", headerText:"Task ID" , bgColor:'',width: '70' , textAlign:'Right',format:'',},
+      { field: "taskName", headerText:"Task Name", bgColor:'',width: '200' , textAlign:'Left' ,format:''},
+      { field: "startDate",headerText:"Start Date", bgColor:'',width: '90' , textAlign:'Right', format:'yMd'},
+      { field: "endDate", headerText:"End Date",bgColor:'', width: '90' , textAlign:'Right', format:'yMd'},
+      { field: "duration",headerText:"Duration",bgColor:'', width: '80' , textAlign:'Right',format:''},
+      { field: "progress",headerText:"Progress", bgColor:'',width: '80' , textAlign:'Right',format:'' },
+      { field: "priority",headerText:"Priority",bgColor:'', width: '90' , textAlign:'Right',format:''},
       ]
   }
   contextMenuOpen(args): void {
@@ -218,7 +218,11 @@ export class AppComponent  implements OnInit {
       id: columnIndex,
       field: column.field,
       headerText: column.headerText,
-      width: column.width,  
+      width: column.width,
+      bgColor:column.bgColor,  
+      fontSize:column.fontSize,  
+      fontColor:column.fontColor,  
+      dataType:column.bgColor,  
       textAlign:column.textAlign
     }
     this.open(this.content);
@@ -228,6 +232,10 @@ export class AppComponent  implements OnInit {
       id: '',
       field: '',
       headerText:'',
+      dataType:'',
+      bgColor:'',
+      fontSize:'',
+      fontColor:'',
       width: '70', 
       textAlign:'Left'
     }
