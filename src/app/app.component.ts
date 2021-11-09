@@ -320,8 +320,6 @@ export class AppComponent implements OnInit {
   customDeleteRow() {
     const selectedRows = this.treegrid.getSelectedRows();
     selectedRows.map((x) => {
-      //this.treegrid.deleteRow(x);
-      // this.treegrid.deleteRecord(x);
       this.treegrid.dataSource.splice(x, 1);
     });
     this.treegrid.refresh();
