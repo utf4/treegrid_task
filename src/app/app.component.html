@@ -24,6 +24,7 @@
   (contextMenuOpen)="contextMenuOpen($event)"
   allowTextWrap='true' 
 
+
   >
   <e-columns    >
       <e-column *ngFor="let column of columns; let i = index;" 
@@ -39,8 +40,13 @@
                 [id]='i'
                 [isPrimaryKey]='i==0? true:false'
                 >   
-
+                <ng-template #headerTemplate >
+                  <div [ngStyle]="{background:column.bgColor,color:column.fontColor,textAlign:column.textAlign,width:column.width+'px',fontSize:column.fontSize+'px'}">
+                  {{column.headerText}}
+                </div>
+                  </ng-template>
       </e-column>
+
   </e-columns>
   </ejs-treegrid>
 </div>

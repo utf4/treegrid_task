@@ -11,6 +11,7 @@ import {
   PageService,
   SortService,
   FilterService,
+  FreezeService,
 } from "@syncfusion/ej2-angular-treegrid";
 import { AppComponent } from "./app.component";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
@@ -25,6 +26,7 @@ import { FormsModule } from "@angular/forms";
     PageService,
     SortService,
     FilterService,
+    FreezeService,
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],

@@ -4,9 +4,9 @@ import {
   OnInit,
   ViewEncapsulation,
   ViewChild,
-  Inject,
+  TemplateRef,
 } from "@angular/core";
-import { columnData, sampleData } from "../jsontreegriddata";
+import { sampleData } from "../jsontreegriddata";
 import {
   TreeGridComponent,
   RowDDService,
@@ -20,7 +20,6 @@ import {
   EditService,
   FilterService,
   SortService,
-  Column,
   ContextMenuService,
   ReorderService,
   EditSettingsModel,
@@ -31,7 +30,7 @@ import {
   DropDownList,
   ChangeEventArgs,
 } from "@syncfusion/ej2-angular-dropdowns";
-import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { DialogEditEventArgs } from "@syncfusion/ej2-angular-grids";
 @Component({
   selector: "app-root",
@@ -88,9 +87,8 @@ export class AppComponent implements OnInit {
   public cellIndex: Number;
   public selectionOptions: Object;
   public row: Number;
-  public modalTitle = "Add Column";
-  public row: Number;
-  public modalTitle = "Add Column";
+  public modalTitle: String = "Add Column";
+
   public modalData = {
     id: "",
     field: "",
@@ -118,11 +116,9 @@ export class AppComponent implements OnInit {
   public selected_row_index: Array;
   public is_cut: Boolean;
   public customAttributes: Object;
-
   @ViewChild("content", { static: false }) private content;
   @ViewChild("treegrid")
   public treegrid!: TreeGridComponent;
-
   constructor(private modalService: NgbModal) {}
   ngOnInit(): void {
     this.data = sampleData;
@@ -196,8 +192,8 @@ export class AppComponent implements OnInit {
         format: "",
         dataType: "string",
         bgColor: "red",
-        fontSize: "50",
-        fontColor: "",
+        fontSize: "15",
+        fontColor: "white",
       },
       {
         field: "taskName",
@@ -207,8 +203,8 @@ export class AppComponent implements OnInit {
         format: "",
         dataType: "string",
         bgColor: "red",
-        fontSize: "50",
-        fontColor: "",
+        fontSize: "15",
+        fontColor: "white",
       },
       {
         field: "startDate",
@@ -218,8 +214,8 @@ export class AppComponent implements OnInit {
         format: "yMd",
         dataType: "string",
         bgColor: "red",
-        fontSize: "50",
-        fontColor: "",
+        fontSize: "15",
+        fontColor: "white",
       },
       {
         field: "endDate",
@@ -229,8 +225,8 @@ export class AppComponent implements OnInit {
         format: "yMd",
         dataType: "string",
         bgColor: "red",
-        fontSize: "50",
-        fontColor: "",
+        fontSize: "15",
+        fontColor: "white",
       },
       {
         field: "duration",
@@ -240,8 +236,8 @@ export class AppComponent implements OnInit {
         format: "",
         dataType: "string",
         bgColor: "red",
-        fontSize: "50",
-        fontColor: "",
+        fontSize: "15",
+        fontColor: "white",
       },
       {
         field: "progress",
@@ -251,8 +247,8 @@ export class AppComponent implements OnInit {
         format: "",
         dataType: "string",
         bgColor: "red",
-        fontSize: "50",
-        fontColor: "",
+        fontSize: "15",
+        fontColor: "white",
       },
       {
         field: "priority",
@@ -261,9 +257,9 @@ export class AppComponent implements OnInit {
         textAlign: "Center",
         format: "",
         dataType: "string",
-        bgColor: "red",
-        fontSize: "50",
-        fontColor: "",
+        bgColor: "black",
+        fontSize: "15",
+        fontColor: "white",
       },
     ];
   }
@@ -288,11 +284,11 @@ export class AppComponent implements OnInit {
   customPasteNext() {
     let tem_arr = this.data;
     tem_arr = [...tem_arr, ...this.seleted_rows];
-    if (this.is_cut == true) {
+    if (this.is_cut) {
       for (let i = 0; i < this.selected_row_index.length; i++) {
         delete tem_arr[this.selected_row_index[i]];
       }
-      tem_arr = tem_arr.filter((item) => item != undefined);
+      tem_arr = tem_arr.filter((item) => item !== undefined);
     }
     this.treegrid.dataSource = JSON.parse(JSON.stringify(tem_arr));
     this.is_cut = false;
@@ -305,11 +301,11 @@ export class AppComponent implements OnInit {
     const new_array = [...array_obj, ...this.seleted_rows];
     array_obj.subtasks = new_array;
     tem_arr[this.rowIndex] = array_obj;
-    if (this.is_cut == true) {
+    if (this.is_cut) {
       for (let i = 0; i < this.selected_row_index.length; i++) {
         delete tem_arr[this.selected_row_index[i]];
       }
-      tem_arr = tem_arr.filter((item) => item != undefined);
+      tem_arr = tem_arr.filter((item) => item !== undefined);
     }
     this.treegrid.dataSource = JSON.parse(JSON.stringify(tem_arr));
     this.is_cut = false;
@@ -325,7 +321,6 @@ export class AppComponent implements OnInit {
     this.treegrid.refresh();
   }
   customEditRow() {
-    console.log(this.treegrid.selectedRowIndex, "row selected");
     this.treegrid.startEdit();
   }
 
@@ -360,20 +355,20 @@ export class AppComponent implements OnInit {
   }
   editColumn(columnIndex) {
     this.modalTitle = "Edit Column";
-    const data = this.columns[columnIndex];
+    const data: Object = this.columns[columnIndex];
     const column = this.treegrid.getColumnByField(data.field);
-    console.log(column, "get column");
+
     this.modalData = {
       id: columnIndex,
       field: column.field,
       headerText: column.headerText,
       width: column.width,
-      bgColor: column.bgColor,
-      fontSize: column.fontSize,
-      fontColor: column.fontColor,
-      dataType: column.type,
+      bgColor: data.bgColor,
+      fontSize: data.fontSize,
+      fontColor: data.fontColor,
+      dataType: data.type,
       textAlign: column.textAlign,
-      format: column.format,
+      type: column.type,
     };
     this.open(this.content);
   }
@@ -395,12 +390,17 @@ export class AppComponent implements OnInit {
     if (this.modalData.headerText === "" || this.modalData.field === "") {
       alert("Plase Enter Data");
     } else if (this.modalData.id !== "") {
-      console.log(this.modalData, "data updated");
-      const column = this.treegrid.getColumnByField(this.modalData.field);
-      column.headerText = this.modalData.headerText;
-      column.width = this.modalData.width;
-      column.textAlign = this.modalData.textAlign;
+      this.columns[this.modalData.id].headerText = this.modalData.headerText;
+      this.columns[this.modalData.id].bgColor = this.modalData.bgColor;
+      this.columns[this.modalData.id].textAlign = this.modalData.textAlign;
+      this.columns[this.modalData.id].fontColor = this.modalData.fontColor;
+      this.columns[this.modalData.id].dataType = this.modalData.dataType;
+      this.columns[this.modalData.id].format = this.modalData.format;
+      this.columns[this.modalData.id].width = this.modalData.width;
+      this.columns[this.modalData.id].fontSize = this.modalData.fontSize;
+      console.log(this.modalData, "moda data");
       this.treegrid.refreshColumns();
+      this.treegrid.refreshHeader();
       this.modalService.dismissAll();
     } else {
       this.columns.push(this.modalData);
