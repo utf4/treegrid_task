@@ -89,23 +89,35 @@ export class AppComponent implements OnInit {
   public selectionOptions: Object;
   public row: Number;
   public modalTitle = "Add Column";
+  public row: Number;
+  public modalTitle = "Add Column";
   public modalData = {
     id: "",
     field: "",
     headerText: "",
     width: "70",
     textAlign: "",
+    dataType: "",
+    bgColor: "",
+    fontSize: "",
+    fontColor: "",
+    format: "",
   };
   public columns: Array<{
     field: string;
     headerText: string;
     width: string;
+    dataType: string;
+    bgColor: string;
     textAlign: string;
-    format?: string;
+    format?: stringf;
+    fontSize: string;
+    fontColor: string;
   }> = [];
   public seleted_rows: Array;
   public selected_row_index: Array;
   public is_cut: Boolean;
+  public customAttributes: Object;
 
   @ViewChild("content", { static: false }) private content;
   @ViewChild("treegrid")
@@ -114,6 +126,7 @@ export class AppComponent implements OnInit {
   constructor(private modalService: NgbModal) {}
   ngOnInit(): void {
     this.data = sampleData;
+    this.customAttributes = { class: "customColumn" };
     this.columns = this.ColumnVaue();
     this.pageSettings = { pageSize: 10 };
     this.editing = {
@@ -124,7 +137,14 @@ export class AppComponent implements OnInit {
     };
     this.orderIDRules = { required: true };
     this.customerIDRules = { required: true, minLength: 3 };
-    this.toolbarOptions = ["Add", "Edit", "Delete", "Update", "Cancel"];
+    this.toolbarOptions = [
+      "Add",
+      "Edit",
+      "Delete",
+      "Update",
+      "Cancel",
+      "ColumnChooser",
+    ];
 
     this.filterSettings = {
       type: "FilterBar",
@@ -172,50 +192,78 @@ export class AppComponent implements OnInit {
         field: "taskID",
         headerText: "Task ID",
         width: "70",
-        textAlign: "Right",
+        textAlign: "Center",
         format: "",
+        dataType: "string",
+        bgColor: "red",
+        fontSize: "50",
+        fontColor: "",
       },
       {
         field: "taskName",
         headerText: "Task Name",
         width: "200",
-        textAlign: "Left",
+        textAlign: "Center",
         format: "",
+        dataType: "string",
+        bgColor: "red",
+        fontSize: "50",
+        fontColor: "",
       },
       {
         field: "startDate",
         headerText: "Start Date",
         width: "90",
-        textAlign: "Right",
+        textAlign: "Center",
         format: "yMd",
+        dataType: "string",
+        bgColor: "red",
+        fontSize: "50",
+        fontColor: "",
       },
       {
         field: "endDate",
         headerText: "End Date",
         width: "90",
-        textAlign: "Right",
+        textAlign: "Center",
         format: "yMd",
+        dataType: "string",
+        bgColor: "red",
+        fontSize: "50",
+        fontColor: "",
       },
       {
         field: "duration",
         headerText: "Duration",
         width: "80",
-        textAlign: "Right",
+        textAlign: "Center",
         format: "",
+        dataType: "string",
+        bgColor: "red",
+        fontSize: "50",
+        fontColor: "",
       },
       {
         field: "progress",
         headerText: "Progress",
         width: "80",
-        textAlign: "Right",
+        textAlign: "Center",
         format: "",
+        dataType: "string",
+        bgColor: "red",
+        fontSize: "50",
+        fontColor: "",
       },
       {
         field: "priority",
         headerText: "Priority",
         width: "90",
-        textAlign: "Right",
+        textAlign: "Center",
         format: "",
+        dataType: "string",
+        bgColor: "red",
+        fontSize: "50",
+        fontColor: "",
       },
     ];
   }
@@ -316,12 +364,18 @@ export class AppComponent implements OnInit {
     this.modalTitle = "Edit Column";
     const data = this.columns[columnIndex];
     const column = this.treegrid.getColumnByField(data.field);
+    console.log(column, "get column");
     this.modalData = {
       id: columnIndex,
       field: column.field,
       headerText: column.headerText,
       width: column.width,
+      bgColor: column.bgColor,
+      fontSize: column.fontSize,
+      fontColor: column.fontColor,
+      dataType: column.type,
       textAlign: column.textAlign,
+      format: column.format,
     };
     this.open(this.content);
   }
@@ -330,14 +384,20 @@ export class AppComponent implements OnInit {
       id: "",
       field: "",
       headerText: "",
+      dataType: "",
+      bgColor: "",
+      fontSize: "",
+      fontColor: "",
       width: "70",
       textAlign: "Left",
+      format: "",
     };
   }
   saveData() {
     if (this.modalData.headerText === "" || this.modalData.field === "") {
       alert("Plase Enter Data");
     } else if (this.modalData.id !== "") {
+      console.log(this.modalData, "data updated");
       const column = this.treegrid.getColumnByField(this.modalData.field);
       column.headerText = this.modalData.headerText;
       column.width = this.modalData.width;

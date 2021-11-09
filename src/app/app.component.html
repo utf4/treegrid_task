@@ -1,5 +1,5 @@
 
-<div class="control-section">
+<div class="control-section" >
   <ejs-treegrid  
   #treegrid
   allowFiltering='true'
@@ -22,17 +22,29 @@
   [selectionSettings]='selectOptions'
   [allowSelection]='true'
   (contextMenuOpen)="contextMenuOpen($event)"
+  allowTextWrap='true' 
+
   >
-  <e-columns >
-      <e-column *ngFor="let column of columns; let i = index;"
+  <e-columns    >
+      <e-column *ngFor="let column of columns; let i = index;" 
                 [field]="column.field"
                 [headerText]='column.headerText'
+                [fontSize]='column.fontSize'
+                [fontColor]='column.fontColor'
+                [type]='column.dataType'
+                [backgroundColor]='column.bgColor'
                 [width]='column.width' 
                 [textAlign]='column.textAlign'
                 [format]="column.format"
                 [id]='i'
                 [isPrimaryKey]='i==0? true:false'
                 >   
+
+                <!-- <ng-template #headerTemplate >
+                  <div [ngStyle]="{background:column.bgColor, display: 'block'}">
+                  {{column.headerText}}
+                </div>
+                  </ng-template> -->
       </e-column>
   </e-columns>
   </ejs-treegrid>
@@ -65,9 +77,46 @@
         </div>
       </div>
       <div class="form-group">
+        <label for="dateOfBirth">Data Type</label>
+        <div class="input-group">
+          <div class="input-group">
+            <select class="form-control" [(ngModel)]="modalData.dataType" name="dataType">
+              <option selected >Select DataType</option>
+              <option value="string">Text</option>
+              <option value="number">Enum</option>
+              <option value="yMd">Date</option>
+              <option value="boolean">Boolean</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="dateOfBirth">BackGround Color</label>
+        <div class="input-group">
+          <input type="color" class="form-control" placeholder="Select Color"  [(ngModel)]="modalData.bgColor"  name="bgColor"  required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="dateOfBirth">Font Size</label>
+        <div class="input-group">
+          <input  class="form-control" placeholder="Enter Font Size"  [(ngModel)]="modalData.fontSize"  name="fontSize"  required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="dateOfBirth">Font Color</label>
+        <div class="input-group">
+          <input type="color" class="form-control" placeholder="Select Font Color"  [(ngModel)]="modalData.fontColor"  name="fontColor"  required>
+        </div>
+      </div>
+      <div class="form-group">
         <label for="dateOfBirth">TextAlign</label>
         <div class="input-group">
-          <input  class="form-control" placeholder="Enter width"  [(ngModel)]="modalData.textAlign"  name="textAlign"  required>
+          <select class="form-control" [(ngModel)]="modalData.textAlign" name='textAlign'>
+            <option selected  >Select DataType</option>
+            <option value="Right" >Right</option>
+            <option value="Left">Left</option>
+            <option value="Center">Center</option>
+          </select>
         </div>
       </div>
     </form>
@@ -77,7 +126,6 @@
     <button type="button" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">cancel</button>
   </div>
 </ng-template>
-
 
 
 

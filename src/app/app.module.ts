@@ -1,4 +1,8 @@
-import { NgModule } from "@angular/core";
+import {
+  NgModule,
+  NO_ERRORS_SCHEMA,
+  CUSTOM_ELEMENTS_SCHEMA,
+} from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import {
   TreeGridModule,
@@ -23,5 +27,6 @@ import { FormsModule } from "@angular/forms";
     FilterService,
   ],
   bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })
 export class AppModule {}

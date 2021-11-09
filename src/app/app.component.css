@@ -1,23 +1,38 @@
-
 .e-mastertext {
-    font-size: 15px;
-    font-family: Roboto;
-    opacity: 0.87;
-    padding: 1em;
+  font-size: 15px;
+  font-family: Roboto;
+  opacity: 0.87;
+  padding: 1em;
 }
 
 /* custom code start*/
 .e-toolbar-item.e-ghidden .e-btn {
-    background: rgba(0, 0, 0, 0.12);
-    border-color: rgba(0, 0, 0, 0.12);
-    color: #212121;
+  background: rgba(0, 0, 0, 0.12);
+  border-color: rgba(0, 0, 0, 0.12);
+  color: #212121;
 }
 
-
-.e-grid td.e-active{
-    background-color: red;
+.e-grid td.e-active {
+  background-color: red;
 }
 
-.e-treegrid td.e-active { 
-    background-color:pink;
-  } 
+.e-treegrid td.e-active {
+  background-color: pink;
+}
+
+.e-treegrid .e-headercell.customcss {
+  background-color: #2382c3;
+  color: white;
+  font-family: "Bell MT";
+  font-size: "20px";
+}
+.customColumn {
+  background-color: red;
+}
+/* .e-columnheader {
+  background-color: royalblue;
+}
+
+.e-rowcell {
+  background-color: royalblue;
+} */
