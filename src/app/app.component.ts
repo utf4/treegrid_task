@@ -398,7 +398,6 @@ export class AppComponent implements OnInit {
       this.columns[this.modalData.id].format = this.modalData.format;
       this.columns[this.modalData.id].width = this.modalData.width;
       this.columns[this.modalData.id].fontSize = this.modalData.fontSize;
-      console.log(this.modalData, "moda data");
       this.treegrid.refreshColumns();
       this.treegrid.refreshHeader();
       this.modalService.dismissAll();
