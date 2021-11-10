@@ -1,12 +1,6 @@
 // @ts-nocheck
-import {
-  Component,
-  OnInit,
-  ViewEncapsulation,
-  ViewChild,
-  TemplateRef,
-} from "@angular/core";
-import { sampleData } from "../jsontreegriddata";
+import { Component, OnInit, ViewEncapsulation, ViewChild } from "@angular/core";
+import { sampleData, column } from "../jsontreegriddata";
 import {
   TreeGridComponent,
   RowDDService,
@@ -31,7 +25,8 @@ import {
   ChangeEventArgs,
 } from "@syncfusion/ej2-angular-dropdowns";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { DialogEditEventArgs } from "@syncfusion/ej2-angular-grids";
+import { modalData } from "./interface";
+import { custompasteHelper, replacerFunc } from "./helpers";
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
@@ -71,6 +66,7 @@ export class AppComponent implements OnInit {
     { text: "Add Column", target: ".e-headercontent", id: "create-column" },
     { text: "Edit", target: ".e-headercontent", id: "edit-column" },
     { text: "Delete", target: ".e-headercontent", id: "delete-column" },
+    { text: "Freeze Column", target: ".e-headercontent", id: "freeze-column" },
     { text: "Copy", target: ".e-content", id: "customCopy" },
     { text: "Cut", target: ".e-content", id: "customCut" },
     { text: "Add Next", target: ".e-content", id: "customPasteNext" },
@@ -88,8 +84,9 @@ export class AppComponent implements OnInit {
   public selectionOptions: Object;
   public row: Number;
   public modalTitle: String = "Add Column";
+  public columnFrozen = 1;
 
-  public modalData = {
+  public modalData: modalData = {
     id: "",
     field: "",
     headerText: "",
@@ -108,7 +105,7 @@ export class AppComponent implements OnInit {
     dataType: string;
     bgColor: string;
     textAlign: string;
-    format?: stringf;
+    format?: string;
     fontSize: string;
     fontColor: string;
   }> = [];
@@ -122,8 +119,7 @@ export class AppComponent implements OnInit {
   constructor(private modalService: NgbModal) {}
   ngOnInit(): void {
     this.data = sampleData;
-    this.customAttributes = { class: "customColumn" };
-    this.columns = this.ColumnVaue();
+    this.columns = column;
     this.pageSettings = { pageSize: 10 };
     this.editing = {
       allowEditing: true,
@@ -182,87 +178,6 @@ export class AppComponent implements OnInit {
     this.editparams = { params: { format: "n" } };
   }
 
-  ColumnVaue() {
-    return [
-      {
-        field: "taskID",
-        headerText: "Task ID",
-        width: "70",
-        textAlign: "Center",
-        format: "",
-        dataType: "string",
-        bgColor: "red",
-        fontSize: "15",
-        fontColor: "white",
-      },
-      {
-        field: "taskName",
-        headerText: "Task Name",
-        width: "200",
-        textAlign: "Center",
-        format: "",
-        dataType: "string",
-        bgColor: "red",
-        fontSize: "15",
-        fontColor: "white",
-      },
-      {
-        field: "startDate",
-        headerText: "Start Date",
-        width: "90",
-        textAlign: "Center",
-        format: "yMd",
-        dataType: "string",
-        bgColor: "red",
-        fontSize: "15",
-        fontColor: "white",
-      },
-      {
-        field: "endDate",
-        headerText: "End Date",
-        width: "90",
-        textAlign: "Center",
-        format: "yMd",
-        dataType: "string",
-        bgColor: "red",
-        fontSize: "15",
-        fontColor: "white",
-      },
-      {
-        field: "duration",
-        headerText: "Duration",
-        width: "80",
-        textAlign: "Center",
-        format: "",
-        dataType: "string",
-        bgColor: "red",
-        fontSize: "15",
-        fontColor: "white",
-      },
-      {
-        field: "progress",
-        headerText: "Progress",
-        width: "80",
-        textAlign: "Center",
-        format: "",
-        dataType: "string",
-        bgColor: "red",
-        fontSize: "15",
-        fontColor: "white",
-      },
-      {
-        field: "priority",
-        headerText: "Priority",
-        width: "90",
-        textAlign: "Center",
-        format: "",
-        dataType: "string",
-        bgColor: "black",
-        fontSize: "15",
-        fontColor: "white",
-      },
-    ];
-  }
   contextMenuOpen(args): void {
     this.rowIndex = args.rowInfo.rowIndex;
     this.cellIndex = args.rowInfo.cellIndex;
@@ -285,10 +200,7 @@ export class AppComponent implements OnInit {
     let tem_arr = this.data;
     tem_arr = [...tem_arr, ...this.seleted_rows];
     if (this.is_cut) {
-      for (let i = 0; i < this.selected_row_index.length; i++) {
-        delete tem_arr[this.selected_row_index[i]];
-      }
-      tem_arr = tem_arr.filter((item) => item !== undefined);
+      tem_arr = custompasteHelper(tem_arr, this.selected_row_index);
     }
     this.treegrid.dataSource = JSON.parse(JSON.stringify(tem_arr));
     this.is_cut = false;
@@ -298,16 +210,17 @@ export class AppComponent implements OnInit {
   customPasteChild() {
     let tem_arr = this.data;
     const array_obj = tem_arr[Number(this.rowIndex)];
-    const new_array = [...array_obj, ...this.seleted_rows];
-    array_obj.subtasks = new_array;
+    const selectedRows = [...this.seleted_rows];
+    selectedRows.push(array_obj);
+    array_obj.subtasks = selectedRows;
     tem_arr[this.rowIndex] = array_obj;
     if (this.is_cut) {
-      for (let i = 0; i < this.selected_row_index.length; i++) {
-        delete tem_arr[this.selected_row_index[i]];
-      }
-      tem_arr = tem_arr.filter((item) => item !== undefined);
+      tem_arr = custompasteHelper(tem_arr, this.selected_row_index);
     }
-    this.treegrid.dataSource = JSON.parse(JSON.stringify(tem_arr));
+    console.log(tem_arr, "temp array");
+    this.treegrid.dataSource = JSON.parse(
+      JSON.stringify(tem_arr, replacerFunc())
+    );
     this.is_cut = false;
     this.seleted_rows = [];
     this.selected_row_index = [];
@@ -325,28 +238,53 @@ export class AppComponent implements OnInit {
   }
 
   contextMenuClick(args?): void {
-    if (args.item.id === "customCopy") {
-      this.customCopy();
-    } else if (args.item.id === "customCut") {
-      this.customCut();
-    } else if (args.item.id === "customPasteNext") {
-      this.customPasteNext();
-    } else if (args.item.id === "customPasteChild") {
-      this.customPasteChild();
-    } else if (args.item.id === "customDeleteRow") {
-      this.customDeleteRow();
-    } else if (args.item.id === "customEditRow") {
-      this.customEditRow(args);
-    } else if (args.item.id === "create-column") {
-      this.addColumn();
-    } else if (args.item.id === "edit-column") {
-      this.editColumn(args?.column.index);
-    } else if (args.item.id === "delete-column") {
-      this.columns.splice(args?.column.index, 1);
+    switch (args.item.id) {
+      case "customCopy":
+        this.customCopy();
+        break;
+
+      case "customCut":
+        this.customCut();
+        break;
+
+      case "customPasteNext":
+        this.customPasteNext();
+        break;
+
+      case "customPasteChild":
+        this.customPasteChild();
+        break;
+
+      case "customDeleteRow":
+        this.customDeleteRow();
+        break;
+
+      case "customEditRow":
+        this.customEditRow();
+        break;
+
+      case "create-column":
+        this.addColumn();
+        break;
+
+      case "edit-column":
+        this.editColumn(args?.column.index);
+        break;
+
+      case "delete-column":
+        this.deleteColumn(args?.column.index);
+        break;
+
+      case "freeze-column":
+        this.freezeColumn(args?.column.index);
+        break;
     }
   }
   open(content) {
     this.modalService.open(content);
+  }
+  deleteColumn(columnIndex) {
+    this.columns.splice(columnIndex, 1);
   }
   addColumn() {
     this.modalTitle = "Add Column";
@@ -382,7 +320,7 @@ export class AppComponent implements OnInit {
       fontSize: "",
       fontColor: "",
       width: "70",
-      textAlign: "Left",
+      textAlign: "Center",
       format: "",
     };
   }
@@ -398,13 +336,16 @@ export class AppComponent implements OnInit {
       this.columns[this.modalData.id].format = this.modalData.format;
       this.columns[this.modalData.id].width = this.modalData.width;
       this.columns[this.modalData.id].fontSize = this.modalData.fontSize;
-      this.treegrid.refreshColumns();
-      this.treegrid.refreshHeader();
       this.modalService.dismissAll();
     } else {
       this.columns.push(this.modalData);
+      this.treegrid.refreshHeader();
       this.setModalDefaultValue();
       this.modalService.dismissAll();
     }
+  }
+  freezeColumn(columnIndex) {
+    this.columnFrozen = columnIndex + 1;
+    this.treegrid.refreshHeader();
   }
 }

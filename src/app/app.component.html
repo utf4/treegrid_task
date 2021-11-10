@@ -23,8 +23,7 @@
   [allowSelection]='true'
   (contextMenuOpen)="contextMenuOpen($event)"
   allowTextWrap='true' 
-
-
+  [frozenColumns]='columnFrozen'
   >
   <e-columns    >
       <e-column *ngFor="let column of columns; let i = index;" 
