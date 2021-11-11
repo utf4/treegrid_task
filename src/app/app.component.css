@@ -30,3 +30,6 @@
   background-color: red;
   width: 100px;
 }
+.row-height {
+  max-height: 20px;
+}

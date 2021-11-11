@@ -6,7 +6,7 @@
   [dataSource]='data'
   allowPaging='true'
   childMapping='subtasks'
-  height='350'
+  height='90%'
   [treeColumnIndex]='1' 
   [showColumnChooser]='true'
   [toolbar]="toolbarOptions" 
@@ -22,8 +22,10 @@
   [selectionSettings]='selectOptions'
   [allowSelection]='true'
   (contextMenuOpen)="contextMenuOpen($event)"
-  allowTextWrap='true' 
+  allowTextWrap='false' 
   [frozenColumns]='columnFrozen'
+  [allowResizing]='true' 
+  (rowDataBound)='rowBound($event)' 
   >
   <e-columns    >
       <e-column *ngFor="let column of columns; let i = index;" 
@@ -38,6 +40,7 @@
                 [format]="column.format"
                 [id]='i'
                 [isPrimaryKey]='i==0? true:false'
+                minWidth= 200
                 >   
                 <ng-template #headerTemplate >
                   <div [ngStyle]="{background:column.bgColor,color:column.fontColor,textAlign:column.textAlign,width:column.width+'px',fontSize:column.fontSize+'px'}">
@@ -45,6 +48,35 @@
                 </div>
                   </ng-template>
       </e-column>
+      <!-- <ng-template #rowTemplate let-data>
+        <tr>
+          <td class="border" style='margin:18px;min-width: 100px;height:50px; text-align: center;'>
+              {{data.taskID}}
+          </td>
+          <td  class="border" style='margin:18px;min-width: 100px;height:50px; text-align: center;'>
+                {{data.taskName}}
+           
+          </td>
+          <td class="border" style='margin:18px;min-width: 100px;height:50px; text-align: center;'>
+            {{data.startDate}}
+          </td>
+          <td class="border" style='margin:18px;min-width: 100px;height:50px; text-align: center;'>
+            {{data.endDate}}
+          </td>
+          <td class="border" style='margin:18px;min-width: 100px;height:50px; text-align: center;'>
+            {{data.progress}}
+          </td>
+          <td class="border" style='margin:18px;min-width: 100px;height:50px; text-align: center;'>
+            {{data.duration}}
+          </td>
+          <td class="border" style='margin:18px;min-width: 100px;height:50px; text-align: center;'>
+            {{data.priority}}
+          </td>
+          <td class="border" style='margin:18px;min-width: 100px;height:50px; text-align: center;'>
+            {{data.approved}}
+          </td>
+  </tr>
+      </ng-template> -->
 
   </e-columns>
   </ejs-treegrid>

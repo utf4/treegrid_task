@@ -27,6 +27,8 @@ import {
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { modalData } from "./interface";
 import { custompasteHelper, replacerFunc } from "./helpers";
+import { RowDataBoundEventArgs } from "@syncfusion/ej2-grids";
+
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
@@ -67,6 +69,11 @@ export class AppComponent implements OnInit {
     { text: "Edit", target: ".e-headercontent", id: "edit-column" },
     { text: "Delete", target: ".e-headercontent", id: "delete-column" },
     { text: "Freeze Column", target: ".e-headercontent", id: "freeze-column" },
+    {
+      text: "UnFreeze Column",
+      target: ".e-headercontent",
+      id: "Unfreeze-column",
+    },
     { text: "Copy", target: ".e-content", id: "customCopy" },
     { text: "Cut", target: ".e-content", id: "customCut" },
     { text: "Add Next", target: ".e-content", id: "customPasteNext" },
@@ -278,6 +285,9 @@ export class AppComponent implements OnInit {
       case "freeze-column":
         this.freezeColumn(args?.column.index);
         break;
+      case "Unfreeze-column":
+        this.UnfreezeColumn();
+        break;
     }
   }
   open(content) {
@@ -345,7 +355,19 @@ export class AppComponent implements OnInit {
     }
   }
   freezeColumn(columnIndex) {
-    this.columnFrozen = columnIndex + 1;
-    this.treegrid.refreshHeader();
+    console.log(columnIndex, "=", this.columnFrozen);
+    if (columnIndex >= this.columnFrozen || this.columnFrozen === 0) {
+      this.columnFrozen = columnIndex + 1;
+      this.treegrid.refreshHeader();
+    }
+  }
+  UnfreezeColumn() {
+    this.columnFrozen = 0;
+  }
+  rowBound(args: RowDataBoundEventArgs) {
+    console.log(args.row?.cells, "args row bound");
+    args.row.style.maxHeight = "10px";
+    args.row.style.height = "100px";
+    args.row.style.widrh = "100%";
   }
 }
